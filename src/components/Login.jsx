@@ -54,41 +54,47 @@ const Login = () => {
   return (
     <div className="h-full flex bg-[#222831] flex-col justify-center items-center">
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form
-        className={`w-[300px] ${
+      <div
+        className={` ${
           success ? "hidden" : ""
         }  text-white text-center flex flex-col gap-4 rounded-lg shadow-sm p-10 bg-[#393E46]`}
-        onSubmit={handleSubmit}
       >
-        <h2>WELCOME BACK</h2>
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="border-[#00ADB5] px-4 py-1 rounded-lg text-white border-2 bg-none"
-          required
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="border-[#00ADB5] px-4 py-1 rounded-lg text-white border-2 bg-none"
-          onChange={handleChange}
-          required
-        />
-        <button
-          className="bg-[#00ADB5] w-32 p-1 mx-auto rounded-lg"
-          type="submit"
+        <form
+          className={`w-[260px] ${
+            success ? "hidden" : ""
+          }  text-white text-center flex flex-col gap-4`}
+          onSubmit={handleSubmit}
         >
-          Ok
-        </button>
+          <h2>TALENT ENGINE</h2>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="border-[#00ADB5] px-4 py-1 rounded-lg text-white border-2 bg-none"
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="border-[#00ADB5] px-4 py-1 rounded-lg text-white border-2 bg-none"
+            onChange={handleChange}
+            required
+          />
+          <button
+            className="bg-[#00ADB5] w-32 p-1 mx-auto rounded-lg"
+            type="submit"
+          >
+            Ok
+          </button>
+        </form>
         <Link className="text-[#00ADB5] text-sm" to="/register">
           Don't have an account?
         </Link>
-      </form>
+      </div>
 
       <form
         action=""

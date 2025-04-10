@@ -14,6 +14,9 @@ import Apply from "./components/candidate/Apply";
 import Kanban from "./components/candidate/Kanban";
 import AddUsers from "./components/super/AddUsers";
 import AddCompany from "./components/super/AddCompany";
+import InterviewCreator from "./components/company/InterviewCreator";
+// import InterviewSee from "./components/company/InterviewSee";
+import InterviewComplete from "./components/company/InterviewComplete";
 
 function App() {
   return (
@@ -27,14 +30,29 @@ function App() {
           <Route path="jobs/mine" element={<MyJobs />} />
           <Route path="jobs/apply/:vacancyId" element={<Apply />} />
           <Route path="jobs/kanban/:id" element={<Kanban />} />
+
+          <Route
+            path="interview/create/:vacancyId/:accessToken"
+            element={<InterviewCreator />}
+          />
+          {/* <Route
+            path="company/vacancy/:vacancyId/interview/see/:accessToken"
+            element={<InterviewSee />}
+          /> */}
+          <Route
+            path="interview/fill/:vacancyId/:accessToken"
+            element={<InterviewComplete />}
+          />
+
           <Route path="applicants" element={<Applicants />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="me/applications" element={<MyApplications />} />
+
           <Route path="admin/users" element={<AddUsers />} />
           <Route path="admin/orgs" element={<AddCompany />} />
         </Route>
-        <Route path="/*" element={<Main />} />
+        <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

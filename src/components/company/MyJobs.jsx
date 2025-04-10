@@ -47,9 +47,32 @@ const MyJobs = () => {
                   Salary: {job.salary_from} - {job.salary_to} {job.currency}
                 </p>
                 <p className="text-gray-600">Type: {job.employment_type}</p>
-                <Link className="bg-green-600" to={`/in/jobs/kanban/${job.id}`}>
-                  See applications
-                </Link>
+                <div className="flex gap-2">
+                  <Link
+                    className="bg-green-600 px-4 py-2 rounded text-white"
+                    to={`/in/jobs/kanban/${job.id}`}
+                  >
+                    See applications
+                  </Link>
+                  <Link
+                    className="bg-green-600 px-4 py-2 rounded text-white"
+                    to={`/in/interview/create/${job.id}/${
+                      JSON.parse(localStorage.getItem("user_tokens"))
+                        .access_token
+                    }`}
+                  >
+                    Create Interview
+                  </Link>
+                  <Link
+                    className="bg-green-600 px-4 py-2 rounded text-white"
+                    to={`/in/interview/see/${job.id}/${
+                      JSON.parse(localStorage.getItem("user_tokens"))
+                        .access_token
+                    }`}
+                  >
+                    See responses
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

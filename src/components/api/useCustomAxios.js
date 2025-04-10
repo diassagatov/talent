@@ -63,7 +63,7 @@ const useCustomAxios = () => {
     );
 
     return instance;
-  }, []);
+  }, [localStorage.getItem("user_tokens")]);
 
   return axiosInstance;
 };

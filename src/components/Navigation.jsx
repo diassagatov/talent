@@ -4,16 +4,38 @@ import useCustomAxios from "./api/useCustomAxios";
 import getUserData from "./api/user";
 
 const Navigation = () => {
-  const [userRole, setUserRole] = useState("none");
-  const axiosInstance = useCustomAxios();
+  const [userRole, setUserRole] = useState(localStorage.getItem("userRole"));
   const navigate = useNavigate();
+  const [roleLinks, setRoleLinks] = useState("");
+
+  const axiosInstance = useCustomAxios();
+  const [tokensReady, setTokensReady] = useState(
+    !!localStorage.getItem("user_tokens")
+  );
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      if (localStorage.getItem("user_tokens")) {
+        setTokensReady(true);
+      }
+    }, 100);
+
+    if (tokensReady) {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [tokensReady]);
+
+  useEffect(() => {
+    if (!tokensReady) return;
     const fetchUser = async () => {
+      const tokens = localStorage.getItem("user_tokens");
+      if (!tokens) return;
+
       try {
         const resp = await getUserData(axiosInstance);
         const role = resp?.role || "";
-        console.log(resp);
 
         if (role !== userRole) {
           setUserRole(role);
@@ -24,41 +46,45 @@ const Navigation = () => {
         console.error("Failed to fetch user data:", error);
       }
     };
-
     fetchUser();
-  }, [axiosInstance, userRole]); // Ensures re-render when role changes
+  }, [tokensReady]);
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("userRole");
-    localStorage.removeItem("user_access");
     localStorage.removeItem("user_tokens");
     navigate("/login");
   };
 
-  const roleLinks =
-    {
-      applicant: (
-        <>
-          {/* <Link to="/in/me/applications">My applications</Link>  */}
-          <Link to="/in/jobs/search">Jobs</Link>
-        </>
-      ),
-      admin: (
-        <>
-          <Link to="admin/orgs">Organizations</Link>
-          <Link to="admin/users">Users</Link>
-        </>
-      ),
-      manager: (
-        <>
-          <Link to="/in/jobs/mine">Our vacancies</Link>
-        </>
-      ),
-    }[userRole] || null;
+  useEffect(() => {
+    setRoleLinks(
+      {
+        applicant: (
+          <>
+            {/* <Link to="/in/me/applications">My applications</Link>  */}
+            <Link to="/in/jobs/search">Jobs</Link>
+            <Link to="/in/interview/fill">Fill Interview</Link>
+          </>
+        ),
+        admin: (
+          <>
+            <Link to="admin/orgs">Organizations</Link>
+            <Link to="admin/users">Users</Link>
+          </>
+        ),
+        manager: (
+          <>
+            <Link to="/in/jobs/mine">Our vacancies</Link>
+            <Link to="/in/interview/see">See Responses</Link>
+            <Link to="/in/interview/create">Create Interview</Link>
+          </>
+        ),
+      }[userRole] || null
+    );
+  }, [userRole]);
 
   return (
-    <div className="w-full h-[50px] bg-[#393E46] flex justify-between items-center px-8 text-white">
+    <div className="w-full min-h-[50px] bg-[#393E46] flex justify-between items-center px-8 text-white">
       <div className="font-bold text-lg">TalE</div>
       <div className="flex gap-8">
         {roleLinks}
