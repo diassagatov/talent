@@ -48,6 +48,25 @@ const useJobsApi = () => {
     }
   };
 
+  // Function to fetch job vacancies
+  const getAllJobVacancies = async (skip = 0, limit = 100) => {
+    try {
+      const response = await axiosInstance.get(`/applicants/vacancies`, {
+        params: {
+          skip,
+          limit,
+        },
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching job vacancies:", error);
+      throw error;
+    }
+  };
+
   const applyForJob = async (formData) => {
     try {
       const response = await axiosInstance.post(
@@ -82,7 +101,38 @@ const useJobsApi = () => {
     }
   };
 
-  return { createJobVacancy, getJobVacancies, applyForJob, getKanbanData };
+  const updateApplicationStatus = async (applicationId, newStatus) => {
+    try {
+      const response = await axiosInstance.patch(
+        `/jobs/applications/${applicationId}/status?status=${newStatus}`,
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+            // ❌ Don't add Authorization here
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else {
+        console.error("Error:", error.message);
+      }
+      throw error;
+    }
+  };
+
+  return {
+    createJobVacancy,
+    getJobVacancies,
+    applyForJob,
+    getKanbanData,
+    getAllJobVacancies,
+    updateApplicationStatus,
+  };
 };
 
 export default useJobsApi;

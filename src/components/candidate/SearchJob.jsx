@@ -15,7 +15,7 @@ const iconSize = 20;
 const bigIconSize = 28;
 
 const SearchJob = () => {
-  const { getJobVacancies } = useJobsApi();
+  const { getAllJobVacancies } = useJobsApi();
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const SearchJob = () => {
         const org_id = JSON.parse(
           localStorage.getItem("userInfo")
         ).organisation_id;
-        const data = await getJobVacancies(org_id || 2);
+        const data = await getAllJobVacancies();
         setJobs(data);
         setFilteredJobs(data);
       } catch (err) {
@@ -98,10 +98,6 @@ const SearchJob = () => {
     <div className="flex w-full h-full bg-gray-100">
       {/* Filter Panel */}
       <div className="w-1/4 p-6 bg-white border-r shadow-md">
-        <h3 className="text-2xl font-bold mb-6 text-blue-600 flex items-center gap-3">
-          <FaSearch size={bigIconSize} /> Filter Jobs
-        </h3>
-
         <div className="space-y-5">
           <div>
             <label className="block text-sm font-semibold mb-1 text-gray-700">
@@ -119,7 +115,7 @@ const SearchJob = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
+            <label className="text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
               <FaMapMarkerAlt size={iconSize} className="text-pink-600" />
               Location
             </label>
@@ -135,7 +131,7 @@ const SearchJob = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
+            <label className="text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
               <FaBriefcase size={iconSize} className="text-yellow-600" />
               Employment Type
             </label>
@@ -155,7 +151,7 @@ const SearchJob = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
+            <label className="text-sm font-semibold mb-1 text-gray-700 flex items-center gap-2">
               <FaMoneyBillWave size={iconSize} className="text-green-600" />
               Salary Range
             </label>
@@ -199,9 +195,7 @@ const SearchJob = () => {
       </div>
 
       {/* Job List */}
-      <div className="w-full lg:w-3/4 p-8">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">My Jobs</h2>
-
+      <div className="w-full lg:w-3/4 p-8 box-border h-full overflow-y-scroll">
         {loading && <p>Loading jobs...</p>}
         {error && <p className="text-red-600">{error}</p>}
         {!loading && filteredJobs.length === 0 && <p>No jobs available.</p>}
@@ -234,7 +228,9 @@ const SearchJob = () => {
                   </span>
                 </div>
                 <button
-                  onClick={() => navigate(`/in/jobs/apply/${job.id}`)}
+                  onClick={() =>
+                    navigate(`/in/jobs/apply/${job.id}/${job.title}`)
+                  }
                   className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
                 >
                   Apply Now

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import useJobsApi from "../api/jobs.js";
 import cities from "../api/cities"; // Import the city list\
+import getUserData from "../api/user";
+import useCustomAxios from "../api/useCustomAxios";
 
 const CreateJob = () => {
+  const axiosInstance = useCustomAxios();
   const { createJobVacancy } = useJobsApi();
   const [formData, setFormData] = useState({
     title: "",
@@ -71,6 +74,10 @@ const CreateJob = () => {
       const org_id = parseInt(
         JSON.parse(localStorage.getItem("userInfo")).organisation_id
       );
+      if (!org_id) {
+        const userData = await getUserData(axiosInstance);
+        org_id = userData.organisation_id;
+      }
       console.log("the org id is ", org_id);
       await createJobVacancy(jobData, org_id);
       setSuccess("Job created successfully!");
@@ -100,7 +107,6 @@ const CreateJob = () => {
 
   return (
     <div className="">
-      <h2 className="text-2xl font-bold mb-4">Create Job Vacancy</h2>
       {success && <p className="text-green-600">{success}</p>}
       {error && <p className="text-red-600">{error}</p>}
 

@@ -3,6 +3,7 @@ const getUserData = async (axiosInstance) => {
   const response = await axiosInstance.get(
     "https://api.talentengine.tech/auth/user"
   );
+  console.log("user data", response.data);
   return response.data;
 };
 

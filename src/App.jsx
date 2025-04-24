@@ -16,7 +16,8 @@ import AddUsers from "./components/super/AddUsers";
 import AddCompany from "./components/super/AddCompany";
 import InterviewCreator from "./components/company/InterviewCreator";
 // import InterviewSee from "./components/company/InterviewSee";
-import InterviewComplete from "./components/company/InterviewComplete";
+import TakeInterview from "./components/company/TakeInterview";
+import ObserveInterview from "./components/company/ObserveInterview";
 
 function App() {
   return (
@@ -28,20 +29,17 @@ function App() {
           <Route path="jobs/create" element={<CreateJob />} />
           <Route path="jobs/search" element={<SearchJob />} />
           <Route path="jobs/mine" element={<MyJobs />} />
-          <Route path="jobs/apply/:vacancyId" element={<Apply />} />
+          <Route path="jobs/apply/:vacancyId/:title" element={<Apply />} />
           <Route path="jobs/kanban/:id" element={<Kanban />} />
 
           <Route
-            path="interview/create/:vacancyId/:accessToken"
+            path="interview/create/:vacancyId"
             element={<InterviewCreator />}
           />
-          {/* <Route
-            path="company/vacancy/:vacancyId/interview/see/:accessToken"
-            element={<InterviewSee />}
-          /> */}
+          <Route path="interview/see/:appId" element={<ObserveInterview />} />
           <Route
-            path="interview/fill/:vacancyId/:accessToken"
-            element={<InterviewComplete />}
+            path="interview/fill/:intId/:appId"
+            element={<TakeInterview />}
           />
 
           <Route path="applicants" element={<Applicants />} />
